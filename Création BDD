@@ -1,0 +1,68 @@
+﻿CREATE TABLE sport
+ (
+ id integer NOT NULL DEFAULT 0,
+  nom character varying(256) NOT NULL,
+  nb_joueurs_min integer NOT NULL DEFAULT 0,
+  nb_remplacant_max integer NOT NULL DEFAULT 0,
+  CONSTRAINT sport_pkey PRIMARY KEY (id)
+);
+
+
+
+
+
+CREATE TABLE equipe
+(
+  id integer NOT NULL,
+  nom character varying(256) NOT NULL,
+  id_sport integer NOT NULL DEFAULT 0,
+  nb_joueurs integer NOT NULL DEFAULT 0,
+  capitaine character varying(256) NOT NULL,
+  poule integer NOT NULL DEFAULT 0,
+  point integer NOT NULL DEFAULT 0, 
+  en_tournoi boolean DEFAULT true,
+  CONSTRAINT equipe_pkey PRIMARY KEY (id),
+  CONSTRAINT equipe_sport_exkey FOREIGN KEY (id_sport) REFERENCES sport (id)
+);
+
+
+
+
+
+CREATE TABLE joueurs
+(
+  id integer NOT NULL,
+  nom character varying(256) NOT NULL,
+  equipe character varying(256) NOT NULL,
+  capitaine boolean DEFAULT false,
+  CONSTRAINT joueurs_pkey PRIMARY KEY (id)
+);
+
+
+
+
+
+CREATE TABLE equipe_joueurs
+(
+  equipe_id integer,
+  joueur_id integer,
+  capitaine_id integer,
+  CONSTRAINT capitaine_fkey FOREIGN KEY (capitaine_id) REFERENCES joueurs (id), 
+  CONSTRAINT equipe_fkey FOREIGN KEY (equipe_id) REFERENCES equipe (id),
+  CONSTRAINT joueurs_fkey FOREIGN KEY (joueur_id) REFERENCES joueurs (id) 
+ );
+
+
+CREATE TABLE match ( id integer NOT NULL DEFAULT 0,  equipe_1 character varying(256) NOT NULL, equipe_2 character varying(256) NOT NULL,  score_1 integer DEFAULT NULL ,  score_2 integer DEFAULT NULL ,  CONSTRAINT match_pkey PRIMARY KEY (id) );
+
+CREATE TABLE tournoi (code_tournoi integer NOT NULL DEFAULT 0, lieu character varying(256) NOT NULL, date character varying(256) NOT NULL,sport character varying(256) NOT NULL );
+
+
+
+INSERT INTO sport (id, nom , nb_joueurs_min, nb_remplacant_max) VALUES
+(0,'Football Junior', 11 , 5 ),
+(1,'Football Honneur', 11 , 5 ),
+(2,'Football Senior', 11 , 5 ),
+(3,'Rugby Honneur' , 15 , 7),
+(4,'Boxe poids plume', 1 , 1 ),(5,'Handball',6,3) ;
+
